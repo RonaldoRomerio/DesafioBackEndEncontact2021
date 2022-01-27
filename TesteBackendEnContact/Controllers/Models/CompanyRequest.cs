@@ -4,7 +4,7 @@ using TesteBackendEnContact.Core.Interface.ContactBook.Company;
 
 namespace TesteBackendEnContact.Controllers.Models
 {
-    public class SaveCompanyRequest
+    public class CompanyRequest
     {
         public int Id { get; set; }
         [Required]

@@ -72,6 +72,21 @@ namespace TesteBackendEnContact.Repository
                 throw new System.Exception(err.ToString());
             }
         }
+
+        public async Task<IContactBook> UpdateAsync(IContactBook contactBook)
+        {
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+                var dao = new ContactBookDao(contactBook);
+
+                await connection.UpdateAsync<ContactBookDao>(dao);
+
+                return dao;
+
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
+        }
     }
 
     [Table("ContactBook")]

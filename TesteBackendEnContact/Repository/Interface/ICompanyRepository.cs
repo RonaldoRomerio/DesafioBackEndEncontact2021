@@ -10,6 +10,8 @@ namespace TesteBackendEnContact.Repository.Interface
         Task DeleteAsync(int id);
         Task<IEnumerable<ICompany>> GetAllAsync();
         Task<ICompany> GetAsync(int id);
+        Task<ICompany> UpdateAsync(ICompany company);
+
         
     }
 }
