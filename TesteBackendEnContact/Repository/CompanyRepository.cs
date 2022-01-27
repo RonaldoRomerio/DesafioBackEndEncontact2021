@@ -23,47 +23,81 @@ namespace TesteBackendEnContact.Repository
 
         public async Task<ICompany> SaveAsync(ICompany company)
         {
-            using var connection = new SqliteConnection(databaseConfig.ConnectionString);
-            var dao = new CompanyDao(company);
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+                var dao = new CompanyDao(company);
 
-            if (dao.Id == 0)
-                dao.Id = await connection.InsertAsync(dao);
-            else
-                await connection.UpdateAsync(dao);
+                dao.Id = await connection.InsertAsync<CompanyDao>(dao);
 
-            return dao.Export();
+                return dao;
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            using var connection = new SqliteConnection(databaseConfig.ConnectionString);
-            using var transaction = connection.BeginTransaction();
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+                connection.Open();
 
-            var sql = new StringBuilder();
-            sql.AppendLine("DELETE FROM Company WHERE Id = @id;");
-            sql.AppendLine("UPDATE Contact SET CompanyId = null WHERE CompanyId = @id;");
+                using var transaction = connection.BeginTransaction();
 
-            await connection.ExecuteAsync(sql.ToString(), new { id }, transaction);
+                var sql = new StringBuilder();
+                sql.AppendLine("DELETE FROM Company WHERE Id = @id;");
+                sql.AppendLine("UPDATE Contact SET CompanyId = null WHERE CompanyId = @id;");
+
+                await connection.ExecuteAsync(sql.ToString(), new {id}, transaction);
+
+                transaction.Commit();
+                connection.Close();
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
         }
 
         public async Task<IEnumerable<ICompany>> GetAllAsync()
         {
-            using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
 
-            var query = "SELECT * FROM Company";
-            var result = await connection.QueryAsync<CompanyDao>(query);
+                var query = "SELECT * FROM Company";
+                var result = await connection.QueryAsync<CompanyDao>(query);
 
-            return result?.Select(item => item.Export());
+                return result.ToList();
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
         }
 
         public async Task<ICompany> GetAsync(int id)
         {
-            using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
 
-            var query = "SELECT * FROM Conpany where Id = @id";
-            var result = await connection.QuerySingleOrDefaultAsync<CompanyDao>(query, new { id });
+                var query = $"SELECT * FROM Company where Id = @id";
+                var result = await connection.QuerySingleOrDefaultAsync<CompanyDao>(query, new {id});
 
-            return result?.Export();
+                return result;
+            
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
+        }
+
+        public async Task<ICompany> UpdateAsync(ICompany company)
+        {
+            try{
+                using var connection = new SqliteConnection(databaseConfig.ConnectionString);
+                var dao = new CompanyDao(company);
+
+                await connection.UpdateAsync<CompanyDao>(dao);
+
+                return dao;
+
+            }catch(SqliteException err){
+                throw new System.Exception(err.ToString());
+            }
         }
     }
 
