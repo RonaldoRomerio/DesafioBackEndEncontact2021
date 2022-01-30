@@ -18,30 +18,47 @@ namespace TesteBackendEnContact.Controllers
         {
             _logger = logger;
         }
-
+        /// <summary>
+        /// Insere uma empresa.
+        /// </summary>
+        /// <response code="200">Empresa inserida com sucesso</response>
         [HttpPost]
         public async Task<ActionResult<ICompany>> Post(CompanyRequest company, [FromServices] ICompanyRepository companyRepository)
         {
             return Ok(await companyRepository.SaveAsync(company.ToCompany()));
         }
 
+        /// <summary>
+        /// Deleta uma Empresa
+        /// </summary>
+        /// <response code="200">Empresa Deletada com sucesso</response>
         [HttpDelete]
         public async Task Delete(int id, [FromServices] ICompanyRepository companyRepository)
         {
             await companyRepository.DeleteAsync(id);
         }
-
+        /// <summary>
+        /// Lista todas as empresa
+        /// </summary>
+        /// <response code="200">Retorna empresas</response>
         [HttpGet]
         public async Task<IEnumerable<ICompany>> Get([FromServices] ICompanyRepository companyRepository)
         {
             return await companyRepository.GetAllAsync();
         }
-
+        /// <summary>
+        /// Retorna empresa a partir do id
+        /// </summary>
+        /// <response code="200">Retorna empresa</response>
         [HttpGet("{id}")]
         public async Task<ICompany> Get(int id, [FromServices] ICompanyRepository companyRepository)
         {
             return await companyRepository.GetAsync(id);
         }
+        /// <summary>
+        /// Edita empresa a partir do id
+        /// </summary>
+        /// <response code="200">Empresa editada com sucesso</response>
         [HttpPut("")]
         public async Task<ActionResult<ICompany>> Update(CompanyRequest company, [FromServices] ICompanyRepository companyRepository)
         {
