@@ -40,10 +40,10 @@ namespace TesteBackendEnContact.Controllers
         /// Lista todos os livros de contatos
         /// </summary>
         /// <response code="200">Livros de contatos Listados com sucesso</response>
-        [HttpGet]
-        public async Task<IEnumerable<IContactBook>> Get([FromServices] IContactBookRepository contactBookRepository)
+        [HttpGet("{skip}/{take}")]
+        public async Task<IEnumerable<IContactBook>> Get([FromServices] IContactBookRepository contactBookRepository, int skip, int take)
         {
-            return await contactBookRepository.GetAllAsync();
+            return await contactBookRepository.GetAllAsync(skip, take);
         }
         /// <summary>
         /// Lista um livro de contato a partir de id

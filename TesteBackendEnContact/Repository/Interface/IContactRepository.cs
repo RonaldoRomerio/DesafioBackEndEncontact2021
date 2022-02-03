@@ -8,7 +8,7 @@ namespace TesteBackendEnContact.Repository.Interface
     {
         Task<IContact> SaveAsync(IContact contact);
         Task DeleteAsync(int id);
-        Task<IEnumerable<IContact>> GetAllAsync();
+        Task<IEnumerable<IContact>> GetAllAsync(int skip, int take);
         Task<IContact> GetAsync(int id);
         Task<IContact> UpdateAsync(IContact contact);
     }
