@@ -41,10 +41,11 @@ namespace TesteBackendEnContact.Controllers
         /// Lista todas as empresa
         /// </summary>
         /// <response code="200">Retorna empresas</response>
-        [HttpGet]
-        public async Task<IEnumerable<ICompany>> Get([FromServices] ICompanyRepository companyRepository)
+        [HttpGet("{skip}/{take}")]
+        public async Task<IEnumerable<ICompany>> Get([FromServices] ICompanyRepository companyRepository,
+                                                    int skip = 1, int take = 20)
         {
-            return await companyRepository.GetAllAsync();
+            return await companyRepository.GetAllAsync(skip, take);
         }
         /// <summary>
         /// Retorna empresa a partir do id

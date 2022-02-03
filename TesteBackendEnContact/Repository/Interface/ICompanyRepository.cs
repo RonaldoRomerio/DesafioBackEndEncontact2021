@@ -4,11 +4,11 @@ using TesteBackendEnContact.Core.Interface.ContactBook.Company;
 
 namespace TesteBackendEnContact.Repository.Interface
 {
-    public interface ICompanyRepository
+    public interface ICompanyRepository 
     {
         Task<ICompany> SaveAsync(ICompany company);
         Task DeleteAsync(int id);
-        Task<IEnumerable<ICompany>> GetAllAsync();
+        Task<IEnumerable<ICompany>> GetAllAsync(int skip, int take);
         Task<ICompany> GetAsync(int id);
         Task<ICompany> UpdateAsync(ICompany company);
 

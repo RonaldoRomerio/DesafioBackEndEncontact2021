@@ -41,10 +41,10 @@ namespace TesteBackendEnContact.Controllers
         /// Lista todos os contatos
         /// </summary>
         /// <response code="200">Retorna Contatos</response>
-        [HttpGet]
-        public async Task<IEnumerable<IContact>> Get([FromServices] IContactRepository contactRepository)
+        [HttpGet("{skip}/{take}")]
+        public async Task<IEnumerable<IContact>> Get([FromServices] IContactRepository contactRepository, int skip, int take)
         {
-            return await contactRepository.GetAllAsync();
+            return await contactRepository.GetAllAsync(skip, take);
         }
         /// <summary>
         /// Retorna contato a partir do id

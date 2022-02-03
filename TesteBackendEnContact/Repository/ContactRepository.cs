@@ -34,7 +34,7 @@ namespace TesteBackendEnContact.Repository
             }
         }
 
-        public async Task<IEnumerable<IContact>> GetAllAsync()
+        public async Task<IEnumerable<IContact>> GetAllAsync(int skip, int take)
         {
             try{
                 using var connection = new SqliteConnection(databaseConfig.ConnectionString);
@@ -42,7 +42,7 @@ namespace TesteBackendEnContact.Repository
                 var query = $"SELECT * FROM Contact";
                 var result = await connection.QueryAsync<ContactDao>(query);
 
-                return result.ToList();
+                return result.Skip(skip).Take(take).ToList();
             
             }catch(SqliteException err){
                 throw new System.Exception(err.ToString());
